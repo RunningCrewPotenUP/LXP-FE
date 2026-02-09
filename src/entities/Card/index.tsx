@@ -1,0 +1,41 @@
+import Image from "next/image";
+import Thumbnail from "../../../public/image.png";
+import cardStyle from "./style";
+
+import { CardProps } from "./model/props.type";
+import { Badge, Tag } from "./ui";
+
+const Card = ({ title, description, badgeOptions, tagOptions }: CardProps) => {
+  return (
+    <button className={cardStyle.variants.container}>
+      {/* Thumbnail Image */}
+      <div className="relative h-48 overflow-hidden">
+        <Image className={cardStyle.variants.image} src={Thumbnail} alt="" />
+
+        {badgeOptions && (
+          <div className="absolute top-4 left-4">
+            <Badge {...badgeOptions} />
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col flex-1 p-5 text-start">
+        {/* Title */}
+        <h3 className={cardStyle.variants.title}>{title}</h3>
+
+        {/* Description */}
+        <p className={cardStyle.variants.description}>{description}</p>
+
+        {tagOptions && (
+          <div className="flex flex-nowrap gap-1.5 mt-auto">
+            {tagOptions.map((tagOption, index) => (
+              <Tag key={index} {...tagOption} />
+            ))}
+          </div>
+        )}
+      </div>
+    </button>
+  );
+};
+
+export default Card;

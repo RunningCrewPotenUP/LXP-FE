@@ -1,8 +1,8 @@
-import { ButtonProps } from "./props.type";
+import { ButtonProps } from "./model/props.type";
 import buttonStyle from "./style";
 
-const Button = ({
-  children,
+const ActionButton = ({
+  label,
   variant,
   icon: Icon,
   active,
@@ -16,9 +16,9 @@ const Button = ({
           className={`transition-transform duration-200 ${active ? "scale-110" : "group-hover:scale-110"}`}
         />
       )}
-      {children}
+      {label}
     </button>
   );
 };
 
-export default Button;
+export default ActionButton;

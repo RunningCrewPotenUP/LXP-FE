@@ -1,5 +1,5 @@
-import Button from "@/src/entities/Button";
 import { UsersIcon } from "lucide-react";
+import { ActionButton } from "./ui";
 
 const CrewHero = () => {
   return (
@@ -16,12 +16,8 @@ const CrewHero = () => {
           러닝크루에서 당신의 성장을 함께할 동료를 만나보세요.
         </p>
         <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-          <Button variant="primary" shadow>
-            지금 참여하기
-          </Button>
-          <Button variant="secondary" shadow>
-            자세히 알아보기
-          </Button>
+          <ActionButton variant="primary" label="지금 참여하기" shadow />
+          <ActionButton variant="secondary" label="자세히 알아보기" shadow />
         </div>
       </div>
       {/* <div className="absolute top-0 right-0 h-full w-1/2 opacity-10 pointer-events-none"> */}

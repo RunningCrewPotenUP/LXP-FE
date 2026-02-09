@@ -1,7 +1,7 @@
 type ButtonVariant = "primary" | "secondary" | "navigation" | "border";
 
 interface ButtonProps {
-  children: string;
+  label: string;
   active?: boolean;
   shadow?: boolean;
   icon?: any;
