@@ -7,9 +7,10 @@ const ActionButton = ({
   icon: Icon,
   active,
   shadow,
+  full,
 }: ButtonProps) => {
   return (
-    <button className={buttonStyle({ variant, active, shadow })}>
+    <button className={buttonStyle({ variant, active, shadow, full })}>
       {Icon && (
         <Icon
           size={20}

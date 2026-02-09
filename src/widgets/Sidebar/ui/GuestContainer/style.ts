@@ -4,7 +4,7 @@ import { tv } from "tailwind-variants";
 const guestContainerStyle = tv({
   variants: {
     container: clsx(
-      "space-y-3 flex flex-col",
+      "space-y-3 flex flex-col w-full",
       "animate-in fade-in slide-in-from-bottom-2",
     ),
   },

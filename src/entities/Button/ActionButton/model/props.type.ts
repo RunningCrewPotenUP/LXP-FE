@@ -5,6 +5,7 @@ interface ButtonProps {
   active?: boolean;
   shadow?: boolean;
   icon?: any;
+  full?: boolean;
 
   variant?: ButtonVariant;
 }

@@ -46,6 +46,11 @@ const buttonStyle = tv({
       true: "shadow-lg",
       false: "",
     },
+
+    full: {
+      true: "w-full",
+      false: "",
+    },
   },
 
   defaultVariants: {
