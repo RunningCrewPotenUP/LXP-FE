@@ -13,9 +13,9 @@ const buttonStyle = tv({
       ),
 
       secondary: clsx(
-        "bg-indigo-500 hover:bg-indigo-400",
+        "bg-indigo-500 hover:bg-indigo-700",
         "text-white",
-        "border border-indigo-400",
+        "border border-indigo-400 dark:hover:border-indigo-600",
         "items-center justify-center",
       ),
 
