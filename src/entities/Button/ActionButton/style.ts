@@ -21,7 +21,7 @@ const buttonStyle = tv({
 
       navigation: clsx(
         "flex-1 items-center text-center",
-        "bg-transparent hover:bg-indigo-50 dark:hover:bg-indigo-800",
+        "bg-transparent hover:bg-indigo-50 dark:hover:bg-indigo-800/70",
         "text-neutral-700 dark:text-slate-50",
       ),
 
