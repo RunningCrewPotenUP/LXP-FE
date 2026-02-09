@@ -10,7 +10,12 @@ const Card = ({ title, description, badgeOptions, tagOptions }: CardProps) => {
     <button className={cardStyle.variants.container}>
       {/* Thumbnail Image */}
       <div className="relative h-48 overflow-hidden">
-        <Image className={cardStyle.variants.image} src={Thumbnail} alt="" />
+        <Image
+          className={cardStyle.variants.image}
+          src={Thumbnail}
+          alt=""
+          priority
+        />
 
         {badgeOptions && (
           <div className="absolute top-4 left-4">

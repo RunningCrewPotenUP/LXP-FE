@@ -1,13 +1,16 @@
 import clsx from "clsx";
 import { InputFieldProps } from "./props.type";
 
-const InputField = ({ icon: Icon, ...rest }: InputFieldProps) => {
+const InputField = ({ icon: Icon, inputOptions }: InputFieldProps) => {
   return (
-    <div className="relative w-full lg:w-72">
-      <Icon
-        size={18}
-        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-      />
+    <div className="flex relative w-full">
+      {Icon && (
+        <Icon
+          size={18}
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+        />
+      )}
+
       <input
         className={clsx(
           "w-full border rounded-xl py-3 pl-12 pr-4 text-sm outline-none transition-all shadow-sm",
@@ -15,7 +18,7 @@ const InputField = ({ icon: Icon, ...rest }: InputFieldProps) => {
           "focus:ring-2 border-slate-100 dark:border-neutral-700 focus:ring-indigo-400 dark:focus:ring-indigo-500",
           "bg-slate-50 dark:bg-neutral-800",
         )}
-        {...rest}
+        {...inputOptions}
       />
     </div>
   );

@@ -7,21 +7,21 @@ const buttonStyle = tv({
   variants: {
     variant: {
       primary: clsx(
+        "bg-indigo-500 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600",
+        "text-white",
+        "border border-indigo-400 dark:border-indigo-500 dark:hover:border-indigo-900",
+        "items-center justify-center",
+      ),
+
+      secondary: clsx(
         "bg-white hover:bg-indigo-50",
         "text-indigo-600",
         "items-center justify-center",
       ),
 
-      secondary: clsx(
-        "bg-indigo-500 hover:bg-indigo-700",
-        "text-white",
-        "border border-indigo-400 dark:hover:border-indigo-600",
-        "items-center justify-center",
-      ),
-
       navigation: clsx(
         "flex-1 items-center text-center",
-        "bg-transparent hover:bg-indigo-50 dark:hover:bg-indigo-800/70",
+        "bg-transparent hover:bg-indigo-50 dark:hover:bg-indigo-800/50",
         "text-neutral-700 dark:text-slate-50",
       ),
 

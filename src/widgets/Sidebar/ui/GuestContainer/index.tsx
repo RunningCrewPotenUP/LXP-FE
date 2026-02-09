@@ -11,7 +11,7 @@ const GuestContainer = () => {
         <ActionButton label="로그인" icon={LogInIcon} shadow full />
       </Link>
 
-      <Link href={APP_ROUTES.LOGIN}>
+      <Link href={APP_ROUTES.REGISTER}>
         <ActionButton
           label="회원가입"
           variant="secondary"

@@ -1,6 +1,10 @@
+import { LucideIcon } from "lucide-react";
+
 interface InputFieldProps {
-  icon?: any;
-  inputOptions?: React.InputHTMLAttributes<HTMLInputElement>;
+  icon?: LucideIcon;
+  full?: boolean;
+
+  inputOptions?: Omit<React.InputHTMLAttributes<HTMLInputElement>, "className">;
 }
 
 export type { InputFieldProps };
