@@ -8,9 +8,13 @@ const ActionButton = ({
   active,
   shadow,
   full,
+  buttonOptions,
 }: ButtonProps) => {
   return (
-    <button className={buttonStyle({ variant, active, shadow, full })}>
+    <button
+      className={buttonStyle({ variant, active, shadow, full })}
+      {...buttonOptions}
+    >
       {Icon && (
         <Icon
           size={20}

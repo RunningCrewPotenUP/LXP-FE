@@ -8,6 +8,11 @@ interface ButtonProps {
   full?: boolean;
 
   variant?: ButtonVariant;
+
+  buttonOptions?: Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    "className"
+  >;
 }
 
 export type { ButtonProps };

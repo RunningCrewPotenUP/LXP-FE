@@ -1,5 +1,7 @@
+import SignUpForm from "@/src/widgets/RegistryForm";
+
 const RegisterPage = () => {
-  return <div>RegisterPage</div>;
+  return <SignUpForm />;
 };
 
 export default RegisterPage;
