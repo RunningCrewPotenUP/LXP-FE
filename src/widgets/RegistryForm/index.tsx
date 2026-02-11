@@ -125,14 +125,14 @@ const RegistryForm = ({ onBack, onComplete }: SignUpFormProps) => {
         step,
       }}
     >
-      <div className={signUpStyle.variants.container}>
+      <form className={signUpStyle.variants.container}>
         <div className={signUpStyle.variants.content}>
           {step === 1 && (
             <FirstStep formData={formData} onInputChange={handleInputChange} />
           )}
           {step === 2 && <SecondStep formData={formData} />}
         </div>
-      </div>
+      </form>
     </RegistryFormContext>
   );
 };

@@ -1,9 +1,9 @@
+import { IconHero } from "@/src/entities/Hero";
 import { LogInIcon } from "lucide-react";
-import { Hero } from "./ui";
 
 const LoginHero = () => {
   return (
-    <Hero
+    <IconHero
       title={
         <>
           러닝크루

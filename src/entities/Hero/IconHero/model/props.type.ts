@@ -1,7 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import { ReactElement } from "react";
 
-interface HeroProps {
+interface IconHeroProps {
   title: ReactElement | string;
   description?: ReactElement | string;
   children?: ReactElement;
@@ -11,4 +11,4 @@ interface HeroProps {
   iconSize?: number;
 }
 
-export type { HeroProps };
+export type { IconHeroProps };

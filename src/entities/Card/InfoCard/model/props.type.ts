@@ -1,0 +1,14 @@
+import { LucideIcon } from "lucide-react";
+
+type IconColor = "red" | "blue" | "green" | "amber" | "indigo";
+
+interface InfoCardProps {
+  title?: string;
+  label: string;
+  subLabel?: string;
+
+  icon: LucideIcon;
+  iconColor?: IconColor;
+}
+
+export type { InfoCardProps };

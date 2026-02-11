@@ -1,11 +1,15 @@
 import Image from "next/image";
-import Thumbnail from "../../../public/image.png";
+import Thumbnail from "../../../../public/image.png";
+import { Badge, Tag } from "../../Badge";
+import { CardProps } from "./model/props.type";
 import cardStyle from "./style";
 
-import { CardProps } from "./model/props.type";
-import { Badge, Tag } from "./ui";
-
-const Card = ({ title, description, badgeOptions, tagOptions }: CardProps) => {
+const CourseCard = ({
+  title,
+  description,
+  badgeOptions,
+  tagOptions,
+}: CardProps) => {
   return (
     <button className={cardStyle.variants.container}>
       {/* Thumbnail Image */}
@@ -43,4 +47,4 @@ const Card = ({ title, description, badgeOptions, tagOptions }: CardProps) => {
   );
 };
 
-export default Card;
+export default CourseCard;

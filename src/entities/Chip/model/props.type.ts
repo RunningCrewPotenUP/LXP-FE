@@ -1,7 +1,10 @@
-interface ChipProps {
+import { MouseEventHandler } from "react";
+
+interface TagProps {
   label: string;
   selected?: boolean;
-  onClick?: () => void;
+
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export type { ChipProps };
+export type { TagProps };

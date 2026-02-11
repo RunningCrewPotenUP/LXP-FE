@@ -1,12 +1,13 @@
-import { UserPlus2 } from "lucide-react";
-import { Hero } from "..";
+import { UserPlus2Icon } from "lucide-react";
+import { IconHero } from "..";
 
 const FirstStepHero = () => {
   return (
-    <Hero
+    <IconHero
       title={"회원가입"}
-      description={"새로운 가능성을 발견하세요. 바로 시작할 수 있습니다."}
-      icon={UserPlus2}
+      description={"회원가입을 통해 학습을 기록하고 열정을 키우세요"}
+      iconSize={80}
+      icon={UserPlus2Icon}
     />
   );
 };

@@ -1,5 +1,5 @@
+import { ActionButton } from "@/src/entities/Button";
 import { UsersIcon } from "lucide-react";
-import { ActionButton } from "./ui";
 
 const CrewHero = () => {
   return (

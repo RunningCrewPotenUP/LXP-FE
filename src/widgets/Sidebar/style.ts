@@ -5,7 +5,7 @@ const sidebarStyle = tv({
   variants: {
     container: clsx(
       "hidden lg:flex w-64 flex-col fixed inset-y-0 left-0 z-20 p-8",
-      "bg-slate-50 dark:bg-neutral-900",
+      "bg-white dark:bg-neutral-900",
       "border-r border-slate-200 dark:border-neutral-700",
     ),
 

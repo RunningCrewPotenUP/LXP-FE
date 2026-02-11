@@ -1,15 +1,11 @@
 "use client";
 
-import {
-  LockKeyholeIcon,
-  MailIcon,
-  UserIcon,
-  UserPlusIcon,
-} from "lucide-react";
+import { LockKeyholeIcon, MailIcon, UserIcon } from "lucide-react";
 import { ChangeEvent, useContext } from "react";
-import { ActionButton, Hero, InputField, Radio, Select } from "..";
+import { ActionButton, InputField, Radio, Select } from "..";
 import RegistryFormContext from "../../model/context";
 import { FirstStepViewProps } from "../../model/props.type";
+import Hero from "./Hero";
 
 const FirstStep = ({ formData, onInputChange }: FirstStepViewProps) => {
   const context = useContext(RegistryFormContext);
@@ -20,14 +16,7 @@ const FirstStep = ({ formData, onInputChange }: FirstStepViewProps) => {
 
   return (
     <div className="flex flex-col">
-      <h1 className="font-black text-slate-900 mb-3">
-        <Hero
-          title={"회원가입"}
-          description={"회원가입을 통해 학습을 기록하고 열정을 키우세요"}
-          iconSize={80}
-          icon={UserPlusIcon}
-        />
-      </h1>
+      <Hero />
 
       <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
         <InputField

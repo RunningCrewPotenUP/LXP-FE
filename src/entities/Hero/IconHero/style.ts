@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { tv } from "tailwind-variants";
 
-const heroStyle = tv({
+const iconHeroStyle = tv({
   variants: {
     container: {
       VERTICAL: clsx(
@@ -32,4 +32,4 @@ const heroStyle = tv({
   },
 });
 
-export default heroStyle;
+export default iconHeroStyle;

@@ -2,7 +2,7 @@ import { SearchIcon } from "lucide-react";
 import InputField from "../../../entities/InputField";
 import CardContainer from "../../../widgets/CardContainer";
 import CategoryControl from "../../../widgets/CategoryControl";
-import CrewHero from "../../../widgets/Hero/CrewHero";
+import { CrewHero } from "../../../widgets/Hero/";
 
 export default function Home() {
   return (
@@ -19,6 +19,7 @@ export default function Home() {
         <CardContainer
           cardOptions={[
             {
+              id: 1,
               title: "test1",
               description: "test1 description",
               badgeOptions: { label: "개발" },
@@ -38,6 +39,7 @@ export default function Home() {
               ],
             },
             {
+              id: 2,
               title: "test2",
               description: "test2 description",
               badgeOptions: { label: "디자인" },

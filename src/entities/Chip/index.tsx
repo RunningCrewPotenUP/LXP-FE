@@ -1,12 +1,12 @@
-import { ChipProps } from "./model/props.type";
-import chipStyle from "./style";
+import { TagProps } from "./model/props.type";
+import tagStyle from "./style";
 
-const Chip = ({ label, selected, onClick }: ChipProps) => {
+const Tag = ({ selected, onClick, label }: TagProps) => {
   return (
-    <button type="button" onClick={onClick} className={chipStyle({ selected })}>
+    <button type="button" className={tagStyle({ selected })} onClick={onClick}>
       {label}
     </button>
   );
 };
 
-export default Chip;
+export default Tag;

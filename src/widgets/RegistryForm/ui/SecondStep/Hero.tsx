@@ -1,12 +1,21 @@
-import { UserPlus2 } from "lucide-react";
-import { Hero } from "..";
+import { TagsIcon } from "lucide-react";
+import { IconHero } from "..";
 
 const SecondStepHero = () => {
   return (
-    <Hero
-      title={"회원가입"}
-      description={"새로운 가능성을 발견하세요. 바로 시작할 수 있습니다."}
-      icon={UserPlus2}
+    <IconHero
+      title={"관심사 설정"}
+      description={
+        <>
+          <span>관심사를 설정해서 맞춤 학습 경험을 누리세요</span>
+          <br />
+          <span className="text-sm text-slate-50/40">
+            최대 5개 까지 설정 가능
+          </span>
+        </>
+      }
+      iconSize={80}
+      icon={TagsIcon}
     />
   );
 };

@@ -1,4 +1,4 @@
-import { CardProps } from "@/src/entities/Card/model/props.type";
+import { CardProps } from "@/src/entities/Card/CourseCard/model/props.type";
 
 interface CardContainerProps {
   cardOptions: CardProps[];
