@@ -10,9 +10,13 @@ const photoHeroStyle = tv({
     ),
 
     textContainer:
-      "absolute space-y-2 z-10 bottom-0 left-0 p-3 md:p-8 transition-all",
+      "absolute space-y-2 z-10 bottom-0 left-0 py-3 px-6 xl:py-5 xl:px-8 transition-all",
 
-    title: clsx("text-3xl md:text-4xl", "font-black leading-tight", "mb-4"),
+    title: clsx(
+      "text-xl md:text-3xl xl:text-4xl",
+      "font-black leading-tight",
+      "mb-4",
+    ),
 
     description: clsx("text-indigo-100", "font-medium leading-relaxed", "mb-8"),
 

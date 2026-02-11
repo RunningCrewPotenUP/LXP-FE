@@ -6,8 +6,8 @@ const lectureCardStyle = tv({
     container: clsx(
       "flex-1 relative overflow-hidden space-y-2 cursor-pointer",
       "p-5 md:p-6",
-      "bg-white dark:bg-slate-800",
-      "border border-slate-100 hover:border-indigo-200 dark:border-neutral-700 dark:hover:border-indigo-600",
+      "bg-white dark:bg-neutral-800",
+      "border border-slate-100 hover:border-indigo-300 dark:border-neutral-700 dark:hover:border-indigo-500",
       "rounded-2xl",
       "hover:shadow-md",
       "hover:scale-[1.005]",
@@ -15,7 +15,7 @@ const lectureCardStyle = tv({
     ),
 
     lectureTitle: clsx(
-      "text-lg font-bold mb-1 text-slate-800 dark:text-slate-200",
+      "text-lg font-bold mb-1 text-neutral-800 dark:text-slate-200",
     ),
 
     infoContainer: clsx(

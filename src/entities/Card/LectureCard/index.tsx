@@ -29,7 +29,7 @@ const LectureCard = () => {
 
       {toggle && (
         <div
-          className="space-y-3 mt-6 inset-0 bg-slate-700/40 rounded-2xl p-4 text-slate-50"
+          className="space-y-3 mt-6 border border-slate-100 dark:border-neutral-700 inset-0 bg-slate-50 dark:bg-neutral-700/40 rounded-2xl p-4 text-slate-50 shadow-md shadow-slate-200/50 dark:shadow-neutral-900/70"
           onClick={(e) => e.defaultPrevented}
         >
           <LectureDetailCard
