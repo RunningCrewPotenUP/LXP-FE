@@ -6,6 +6,7 @@ interface InfoCardProps {
   title?: string;
   label: string;
   subLabel?: string;
+  subLabelOnClick?: () => void;
 
   icon: LucideIcon;
   iconColor?: IconColor;

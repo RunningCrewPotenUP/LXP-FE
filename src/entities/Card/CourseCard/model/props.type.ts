@@ -5,6 +5,7 @@ interface CardProps {
   id: number;
   title: string;
   description?: string;
+  thumbnail?: string;
 
   badgeOptions?: BadgeProps;
   tagOptions?: TagProps[];

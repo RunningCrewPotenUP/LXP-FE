@@ -5,13 +5,13 @@ const cardStyle = tv({
   variants: {
     container: clsx(
       "bg-slate-50 dark:bg-slate-800",
-      "rounded-2xl overflow-hidden shadow-sm cursor-pointer group flex flex-col h-full",
+      "rounded-2xl overflow-hidden shadow-sm cursor-pointer group flex flex-col w-full h-full",
       "border border-slate-100 dark:border-slate-800",
       "hover:shadow-xl hover:-translate-y-1 transition-all duration-300",
     ),
 
     image: clsx(
-      "object-cover group-hover:scale-105 transition-transform duration-300",
+      "w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300",
     ),
 
     title: clsx(

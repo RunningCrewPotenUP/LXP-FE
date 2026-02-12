@@ -1,16 +1,15 @@
 import { InfoCard } from "@/src/entities/Card";
 import EnrollmentCard from "@/src/entities/Card/EnrollmentCard";
-import {
-  AwardIcon,
-  CheckCircle2Icon,
-  ClockIcon,
-  MessageSquareIcon,
-} from "lucide-react";
+import { getCourseLearnRoute } from "@/src/shared/constants/routes";
+import RoleUpgradeInfoCard from "./RoleUpgradeInfoCard";
+import { MailIcon, SparklesIcon, UserIcon } from "lucide-react";
 import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 import Thumbnail from "../../../../public/image.png";
 
 type EnrollmentApiItem = {
   id?: number;
+  courseId?: number;
   title?: string;
   courseTitle?: string;
   progress?: number;
@@ -19,6 +18,7 @@ type EnrollmentApiItem = {
   thumbnailUrl?: string;
   imageUrl?: string;
   course?: {
+    id?: number;
     title?: string;
     thumbnailUrl?: string;
     imageUrl?: string;
@@ -32,11 +32,36 @@ type EnrollmentApiResponse = {
   } | null;
 };
 
+type UserMeApiItem = {
+  userId?: number;
+  email?: string;
+  name?: string;
+  role?: string;
+  level?: string;
+};
+
+type UserMeApiResponse = {
+  data?: UserMeApiItem | null;
+  error?: {
+    code?: string;
+    message?: string;
+  } | null;
+};
+
 type EnrollmentCardItem = {
   id: string;
+  courseId?: number;
   title: string;
   thumbnail: string;
   progress?: number;
+};
+
+type UserInfo = {
+  name: string;
+  email: string;
+  role: string;
+  level: string;
+  canUpgradeRole: boolean;
 };
 
 const getBaseUrl = async () => {
@@ -85,6 +110,7 @@ const mapToEnrollmentCard = (
 
   return {
     id: String(item.id ?? index),
+    courseId: item.course?.id ?? item.courseId,
     title,
     thumbnail,
     progress: normalizeProgress(item),
@@ -133,35 +159,139 @@ const getEnrollments = async (): Promise<{
   }
 };
 
+const ROLE_LABEL_MAP: Record<string, string> = {
+  LEARNER: "러너",
+  INSTRUCTOR: "크루 리더",
+};
+
+const LEVEL_LABEL_MAP: Record<string, string> = {
+  JUNIOR: "주니어",
+  MIDDLE: "미들",
+  SENIOR: "시니어",
+  EXPERT: "전문가",
+};
+
+const mapRoleLabel = (role?: string) => {
+  if (!role) {
+    return "정보 없음";
+  }
+
+  return ROLE_LABEL_MAP[role] ?? role;
+};
+
+const mapLevelLabel = (level?: string) => {
+  if (!level) {
+    return "정보 없음";
+  }
+
+  return LEVEL_LABEL_MAP[level] ?? level;
+};
+
+const isLearnerRole = (role?: string) => {
+  if (!role) {
+    return false;
+  }
+
+  const normalizedRole = role.trim().toUpperCase();
+
+  return normalizedRole === "LEARNER";
+};
+
+const getMe = async (): Promise<{
+  user: UserInfo | null;
+  unauthorized: boolean;
+}> => {
+  try {
+    const baseUrl = await getBaseUrl();
+    const cookieHeader = (await cookies()).toString();
+
+    const response = await fetch(`${baseUrl}/api/users/me`, {
+      method: "GET",
+      cache: "no-store",
+      headers: cookieHeader
+        ? {
+            cookie: cookieHeader,
+          }
+        : undefined,
+    });
+
+    if (response.status === 401) {
+      return {
+        user: null,
+        unauthorized: true,
+      };
+    }
+
+    const result = (await response.json()) as UserMeApiResponse;
+
+    if (!response.ok) {
+      return {
+        user: null,
+        unauthorized: false,
+      };
+    }
+
+    return {
+      user: {
+        name: result.data?.name?.trim() || "정보 없음",
+        email: result.data?.email?.trim() || "정보 없음",
+        role: mapRoleLabel(result.data?.role),
+        level: mapLevelLabel(result.data?.level),
+        canUpgradeRole: isLearnerRole(result.data?.role),
+      },
+      unauthorized: false,
+    };
+  } catch {
+    return {
+      user: null,
+      unauthorized: false,
+    };
+  }
+};
+
 const MePage = async () => {
-  const { cards, errorMessage } = await getEnrollments();
+  const [{ cards, errorMessage }, meResult] = await Promise.all([
+    getEnrollments(),
+    getMe(),
+  ]);
+
+  if (meResult.unauthorized) {
+    redirect("/login");
+  }
+
+  const user =
+    meResult.user ??
+    ({
+      name: "정보 없음",
+      email: "정보 없음",
+      role: "정보 없음",
+      level: "정보 없음",
+      canUpgradeRole: false,
+    } satisfies UserInfo);
 
   return (
     <div className="space-y-6">
       <div className="text-white grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
         <InfoCard
-          label={"4개"}
-          title="완주한 크루"
-          icon={CheckCircle2Icon}
+          label={user.name}
+          title="이름"
+          icon={UserIcon}
           iconColor="green"
         />
         <InfoCard
-          label={"28회"}
-          title="토론 참여"
-          subLabel="상위 10%"
-          icon={MessageSquareIcon}
+          label={user.email}
+          title="이메일"
+          icon={MailIcon}
           iconColor="blue"
         />
-        <InfoCard
-          label={"124.5h"}
-          title="총 학습 시간"
-          icon={ClockIcon}
-          iconColor="indigo"
+        <RoleUpgradeInfoCard
+          role={user.role}
+          canUpgrade={user.canUpgradeRole}
         />
         <InfoCard
-          label={"12개"}
-          title="획득 뱃지"
-          icon={AwardIcon}
+          label={user.level}
+          title="레벨"
+          icon={SparklesIcon}
           iconColor="amber"
         />
       </div>
@@ -186,6 +316,11 @@ const MePage = async () => {
               thumbnail={card.thumbnail}
               title={card.title}
               progress={card.progress}
+              learnHref={
+                typeof card.courseId === "number"
+                  ? getCourseLearnRoute(card.courseId)
+                  : undefined
+              }
             />
           ))
         )}

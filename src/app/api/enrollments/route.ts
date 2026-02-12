@@ -33,11 +33,15 @@ const buildEnrollUrl = (courseId: number) => {
   return `${normalizedBaseUrl}/enrollments?courseId=${courseId}`;
 };
 
-const buildEnrollmentsUrl = () => {
+const buildEnrollmentsUrl = (courseId?: number) => {
   const normalizedBaseUrl = normalizeBaseUrl();
 
   if (!normalizedBaseUrl) {
     return null;
+  }
+
+  if (courseId) {
+    return `${normalizedBaseUrl}/enrollments?courseId=${courseId}`;
   }
 
   return `${normalizedBaseUrl}/enrollments`;
@@ -133,7 +137,18 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const enrollmentsUrl = buildEnrollmentsUrl();
+  const { searchParams } = new URL(request.url);
+  const hasCourseId = searchParams.has("courseId");
+  const parsedCourseId = parseCourseId(searchParams.get("courseId"));
+
+  if (hasCourseId && !parsedCourseId) {
+    return NextResponse.json(
+      { error: { message: "유효한 강좌 ID가 필요합니다." } },
+      { status: 400 },
+    );
+  }
+
+  const enrollmentsUrl = buildEnrollmentsUrl(parsedCourseId ?? undefined);
 
   if (!enrollmentsUrl) {
     return NextResponse.json(
@@ -180,7 +195,9 @@ export async function GET(request: Request) {
     ? rawData
     : Array.isArray((rawData as UpstreamEnrollmentPage | undefined)?.content)
       ? ((rawData as UpstreamEnrollmentPage).content ?? [])
-      : [];
+      : rawData && typeof rawData === "object"
+        ? [rawData]
+        : [];
 
   return NextResponse.json(
     {

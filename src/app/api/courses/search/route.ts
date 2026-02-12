@@ -15,6 +15,9 @@ type UpstreamCourse = {
   id?: number;
   title?: string;
   description?: string;
+  thumbnail?: string;
+  thumbnailUrl?: string;
+  imageUrl?: string;
   level?: UpstreamLevel;
   tags?: UpstreamTag[];
 };
@@ -125,6 +128,8 @@ export async function GET(request: Request) {
       id: course.id as number,
       title: course.title as string,
       description: course.description,
+      thumbnail:
+        course.thumbnailUrl ?? course.imageUrl ?? course.thumbnail ?? undefined,
       badgeOptions: course.level?.value
         ? {
             label: course.level.value,

@@ -10,6 +10,7 @@ const CardContainer = ({ cardOptions }: CardContainerProps) => {
         <Link
           key={cardOption.id}
           href={`${APP_ROUTES.COURSE_DETAIL}/${cardOption.id}`}
+          className="block w-full h-full"
         >
           <CourseCard key={index} {...cardOption} />
         </Link>

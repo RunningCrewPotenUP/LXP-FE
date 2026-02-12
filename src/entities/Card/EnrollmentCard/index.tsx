@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ActionButton } from "../../Button";
 import { EnrollmentCardProps } from "./model/props.type";
 import enrollmentCardStyle from "./style";
@@ -7,7 +10,10 @@ const EnrollmentCard = ({
   thumbnail,
   title,
   progress,
+  learnHref,
 }: EnrollmentCardProps) => {
+  const router = useRouter();
+
   return (
     <div>
       <div className={enrollmentCardStyle.variants.container}>
@@ -35,7 +41,18 @@ const EnrollmentCard = ({
           </div>
         </div>
 
-        <ActionButton label={"트랙 입장"} />
+        <ActionButton
+          label={"트랙 입장"}
+          buttonOptions={{
+            type: "button",
+            onClick: () => {
+              if (learnHref) {
+                router.push(learnHref);
+              }
+            },
+            disabled: !learnHref,
+          }}
+        />
       </div>
     </div>
   );

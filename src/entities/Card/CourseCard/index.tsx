@@ -7,18 +7,25 @@ import cardStyle from "./style";
 const CourseCard = ({
   title,
   description,
+  thumbnail,
   badgeOptions,
   tagOptions,
 }: CardProps) => {
+  const thumbnailSrc =
+    typeof thumbnail === "string" && thumbnail.trim().length > 0
+      ? thumbnail
+      : Thumbnail;
+
   return (
     <button className={cardStyle.variants.container}>
       {/* Thumbnail Image */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden bg-slate-200 dark:bg-neutral-700">
         <Image
           className={cardStyle.variants.image}
-          src={Thumbnail}
+          src={thumbnailSrc}
           alt=""
-          priority
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
 
         {badgeOptions && (

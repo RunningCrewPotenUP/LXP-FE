@@ -7,4 +7,7 @@ const APP_ROUTES = {
   ME: "/me",
 };
 
+export const getCourseLearnRoute = (courseId: number | string) =>
+  `${APP_ROUTES.COURSE_DETAIL}/${courseId}/learn`;
+
 export default APP_ROUTES;

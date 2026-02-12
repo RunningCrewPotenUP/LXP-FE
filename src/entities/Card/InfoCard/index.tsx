@@ -8,6 +8,7 @@ const InfoCard = ({
   icon: Icon,
   iconColor = "indigo",
   subLabel,
+  subLabelOnClick,
 }: InfoCardProps) => {
   return (
     <div className={infoCardStyle.variants.container}>
@@ -25,8 +26,17 @@ const InfoCard = ({
 
       <div className="flex items-end justify-between">
         <p className={infoCardStyle.variants.label}>{label}</p>
-        {subLabel && (
+        {subLabel && !subLabelOnClick && (
           <p className={infoCardStyle.variants.subLabel}>{subLabel}</p>
+        )}
+        {subLabel && subLabelOnClick && (
+          <button
+            type="button"
+            onClick={subLabelOnClick}
+            className={clsx(infoCardStyle.variants.subLabel, "cursor-pointer")}
+          >
+            {subLabel}
+          </button>
         )}
       </div>
     </div>
