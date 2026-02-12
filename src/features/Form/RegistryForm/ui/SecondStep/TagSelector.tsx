@@ -14,8 +14,12 @@ const TagSelector = () => {
   }
 
   const orderedCategories = [
-    ...CATEGORY_ORDER.filter((category) => context.categories.includes(category)),
-    ...context.categories.filter((category) => !CATEGORY_ORDER.includes(category)),
+    ...CATEGORY_ORDER.filter((category) =>
+      context.categories.includes(category),
+    ),
+    ...context.categories.filter(
+      (category) => !CATEGORY_ORDER.includes(category),
+    ),
   ];
 
   return (
@@ -82,7 +86,9 @@ const TagSelector = () => {
                         key={tag.tagId}
                         label={tag.name}
                         onClick={() => context.toggleInterest(tag.tagId)}
-                        selected={context.formData.selectedTagIds.includes(tag.tagId)}
+                        selected={context.formData.selectedTagIds.includes(
+                          tag.tagId,
+                        )}
                       />
                     ))}
                   </div>

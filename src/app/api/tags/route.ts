@@ -101,7 +101,8 @@ export async function GET() {
     return NextResponse.json(
       {
         error: {
-          message: parsedBody?.error?.message ?? "태그 목록 조회에 실패했습니다.",
+          message:
+            parsedBody?.error?.message ?? "태그 목록 조회에 실패했습니다.",
         },
       },
       { status: upstreamResponse.status },
@@ -109,15 +110,13 @@ export async function GET() {
   }
 
   const rawTags = extractTags(parsedBody);
-  const tags = rawTags
-    .filter(isValidTag)
-    .map((tag) => ({
-      tagId: tag.tagId as number,
-      name: tag.name as string,
-      category: tag.category as string,
-      subCategory: tag.subCategory as string,
-      status: tag.status ?? "ACTIVE",
-    }));
+  const tags = rawTags.filter(isValidTag).map((tag) => ({
+    tagId: tag.tagId as number,
+    name: tag.name as string,
+    category: tag.category as string,
+    subCategory: tag.subCategory as string,
+    status: tag.status ?? "ACTIVE",
+  }));
 
   return NextResponse.json({
     data: {

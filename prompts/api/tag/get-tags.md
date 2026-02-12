@@ -1,11 +1,13 @@
 # 회원가입 Step2 태그 API 전환 및 컴포넌트 분리 계획
 
 ## 목표
+
 `GET /tags`를 비인증으로 사용하고, 선택 상태를 `tagId` 기준으로 전환하며, 선택 규칙을 최소 3/최대 5로 맞춘다. 또한 Step2의 태그 선택 UI를 별도 컴포넌트로 분리하고, `RegistryForm`의 Context/타입까지 정리한다.
 
 핵심 원칙은 **표시용 데이터(name/category)** 와 **제출용 식별자(tagId)** 를 분리하는 것이다. 기존 mock 기반 로직(`src/shared/constants/mocks/tags.ts`)을 API 기반으로 교체하고, Step2는 프레젠테이션 중심으로 단순화한다.
 
 ## 구현 단계
+
 1. **태그 도메인 계약 정리**
    - `src/features/Form/RegistryForm/model/types.ts`
    - `src/features/Form/RegistryForm/model/context.ts`
@@ -39,6 +41,7 @@
    - 필요 시 `prompts/api/auth/register.md`와 실제 계약 차이를 정리해 유지보수 혼선 감소
 
 ## 검증 항목
+
 - `npm run lint`로 타입/ESLint 회귀 확인
 - 수동 검증
   - Step2 진입 시 태그 목록 로드 성공
@@ -50,6 +53,7 @@
 - 가능하면 E2E에 최소/최대 선택 경계 케이스 추가
 
 ## 확정된 결정사항
+
 - 태그 조회: 비인증 호출
 - 선택 상태 저장 기준: `tagId`
 - 선택 개수 규칙: 최소 3, 최대 5
