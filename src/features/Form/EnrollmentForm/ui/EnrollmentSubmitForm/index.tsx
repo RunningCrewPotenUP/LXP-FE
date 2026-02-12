@@ -1,7 +1,22 @@
 import { ActionButton } from "@/src/entities/Button";
 import enrollmentSubmitFormStyle from "./style";
 
-const EnrollmentSubmitForm = () => {
+type EnrollmentSubmitFormProps = {
+  instructorName?: string;
+  durationInHours?: number;
+};
+
+const EnrollmentSubmitForm = ({
+  instructorName,
+  durationInHours,
+}: EnrollmentSubmitFormProps) => {
+  const safeInstructorName = instructorName ?? "종원컴퍼니";
+  const instructorInitial = safeInstructorName.charAt(0) || "크";
+  const safeDuration =
+    typeof durationInHours === "number" && durationInHours > 0
+      ? `${durationInHours}시간`
+      : "10시간";
+
   return (
     <div className="xl:w-80 h-fit sticky top-6">
       <div className={enrollmentSubmitFormStyle.variants.container}>
@@ -10,10 +25,12 @@ const EnrollmentSubmitForm = () => {
             크루 리더
           </p>
           <div className="flex items-center space-x-3">
-            <div className={enrollmentSubmitFormStyle.variants.icon}>종</div>
+            <div className={enrollmentSubmitFormStyle.variants.icon}>
+              {instructorInitial}
+            </div>
             <div>
               <p className={enrollmentSubmitFormStyle.variants.instructorName}>
-                종원컴퍼니
+                {safeInstructorName}
               </p>
               <p className="text-[10px] text-slate-500 font-medium">강사</p>
             </div>
@@ -23,7 +40,7 @@ const EnrollmentSubmitForm = () => {
           <div className="flex justify-between items-center text-sm font-medium border-b border-slate-50 dark:border-slate-600 pb-3">
             <span className="text-slate-500">소요 시간</span>
             <span className="text-slate-800 dark:text-slate-500 font-bold">
-              10시간
+              {safeDuration}
             </span>
           </div>
         </div>

@@ -1,10 +1,63 @@
 import { SearchIcon } from "lucide-react";
+import { headers } from "next/headers";
 import InputField from "../../../entities/InputField";
 import CardContainer from "../../../widgets/CardContainer";
 import CategoryControl from "../../../widgets/CategoryControl";
 import { CrewHero } from "../../../widgets/Hero/";
 
-export default function Home() {
+type MainApiResponse = {
+  data?: {
+    cards?: {
+      id: number;
+      title: string;
+      description?: string;
+      badgeOptions?: {
+        label: string;
+      };
+      tagOptions?: {
+        label: string;
+      }[];
+    }[];
+  };
+};
+
+const getBaseUrl = async () => {
+  const headerStore = await headers();
+  const forwardedHost = headerStore.get("x-forwarded-host");
+  const host = forwardedHost ?? headerStore.get("host");
+
+  if (!host) {
+    return "http://localhost:3000";
+  }
+
+  const forwardedProtocol = headerStore.get("x-forwarded-proto");
+  const protocol = forwardedProtocol ?? (host.includes("localhost") ? "http" : "https");
+
+  return `${protocol}://${host}`;
+};
+
+const getCourseCards = async () => {
+  try {
+    const baseUrl = await getBaseUrl();
+    const response = await fetch(`${baseUrl}/api/courses/search`, {
+      method: "GET",
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const result = (await response.json()) as MainApiResponse;
+    return result.data?.cards ?? [];
+  } catch {
+    return [];
+  }
+};
+
+export default async function Home() {
+  const courseCards = await getCourseCards();
+
   return (
     <>
       <main className="">
@@ -16,46 +69,7 @@ export default function Home() {
           <InputField icon={SearchIcon} />
         </div>
 
-        <CardContainer
-          cardOptions={[
-            {
-              id: 1,
-              title: "4주 만에 피그마 기초 끝내기: 비전공자 실무 UI 디자인",
-              description:
-                "디자인 툴이 처음이신가요? 이론보다는 직접 그려보며 익히는 실습 중심의 크루입니다. 매주 한 번의 라이브 토론을 통해 서로의 결과물을 피드백합니다.",
-              badgeOptions: { label: "디자인" },
-              tagOptions: [
-                {
-                  label: "Figma",
-                },
-                {
-                  label: "디자인",
-                },
-                {
-                  label: "UI/UX",
-                },
-              ],
-            },
-            {
-              id: 2,
-              title: "비전공자를 위한 SQL 첫걸음: 데이터 리터러시 기르기",
-              description:
-                "데이터가 무서운 문과생을 위한 SQL 입문 과정입니다. 실제 커머스 데이터를 가지고 쿼리를 작성해보며 데이터 문해력을 길러봅시다.",
-              badgeOptions: { label: "데이터" },
-              tagOptions: [
-                {
-                  label: "데이터기초",
-                },
-                {
-                  label: "실무응용",
-                },
-                {
-                  label: "MySQL",
-                },
-              ],
-            },
-          ]}
-        />
+        <CardContainer cardOptions={courseCards} />
       </main>
     </>
   );

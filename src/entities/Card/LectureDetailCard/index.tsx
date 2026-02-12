@@ -1,4 +1,5 @@
 import { ClockIcon } from "lucide-react";
+import { LectureDetailCardProps } from "./model/props.type";
 
 const LectureDetailCard = ({ title, time, order }: LectureDetailCardProps) => {
   return (

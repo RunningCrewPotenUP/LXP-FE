@@ -4,3 +4,5 @@ interface LectureDetailCardProps {
 
   time: string;
 }
+
+export type { LectureDetailCardProps };
