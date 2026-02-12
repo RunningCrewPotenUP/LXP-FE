@@ -108,7 +108,11 @@ export async function GET(
 
   if (!detailUrl) {
     return NextResponse.json(
-      { error: { message: "API 주소가 설정되지 않았습니다. 환경변수를 확인해주세요." } },
+      {
+        error: {
+          message: "API 주소가 설정되지 않았습니다. 환경변수를 확인해주세요.",
+        },
+      },
       { status: 500 },
     );
   }
@@ -124,7 +128,8 @@ export async function GET(
     return NextResponse.json(
       {
         error: {
-          message: parsedBody?.error?.message ?? "강좌 상세 조회에 실패했습니다.",
+          message:
+            parsedBody?.error?.message ?? "강좌 상세 조회에 실패했습니다.",
         },
       },
       { status: upstreamResponse.status },

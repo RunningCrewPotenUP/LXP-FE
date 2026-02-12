@@ -31,7 +31,8 @@ const getBaseUrl = async () => {
   }
 
   const forwardedProtocol = headerStore.get("x-forwarded-proto");
-  const protocol = forwardedProtocol ?? (host.includes("localhost") ? "http" : "https");
+  const protocol =
+    forwardedProtocol ?? (host.includes("localhost") ? "http" : "https");
 
   return `${protocol}://${host}`;
 };

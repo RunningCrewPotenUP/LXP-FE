@@ -4,10 +4,7 @@ import { ClockIcon } from "lucide-react";
 import { useState } from "react";
 import { Tag } from "../../Badge";
 import LectureDetailCard from "../LectureDetailCard";
-import {
-  LectureCardLectureProps,
-  LectureCardProps,
-} from "./model/props.type";
+import { LectureCardLectureProps, LectureCardProps } from "./model/props.type";
 import lectureCardStyle from "./style";
 
 const formatDuration = (durationInSeconds?: number) => {

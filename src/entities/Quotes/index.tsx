@@ -24,7 +24,10 @@ const Quotes = ({ description, tagOptions }: QuotesProps) => {
         {tagOptions && tagOptions.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {tagOptions.map((tagOption, index) => (
-              <Tag key={`quote-tag-${tagOption.label}-${index}`} label={tagOption.label} />
+              <Tag
+                key={`quote-tag-${tagOption.label}-${index}`}
+                label={tagOption.label}
+              />
             ))}
           </div>
         )}

@@ -41,7 +41,8 @@ const getBaseUrl = async () => {
   }
 
   const forwardedProtocol = headerStore.get("x-forwarded-proto");
-  const protocol = forwardedProtocol ?? (host.includes("localhost") ? "http" : "https");
+  const protocol =
+    forwardedProtocol ?? (host.includes("localhost") ? "http" : "https");
 
   return `${protocol}://${host}`;
 };
@@ -88,7 +89,10 @@ const CourseDetailPage = async ({
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
         <div className="xl:order-1 xl:col-span-8 xl:col-start-1">
-          <Quotes description={courseDetail?.description} tagOptions={tagOptions} />
+          <Quotes
+            description={courseDetail?.description}
+            tagOptions={tagOptions}
+          />
         </div>
 
         <div className="xl:order-2 xl:col-span-4 xl:col-start-9 xl:row-start-1 xl:row-span-2 xl:sticky xl:top-24 self-start">

@@ -1,7 +1,12 @@
 import { CompassIcon, HouseIcon } from "lucide-react";
 import { cookies } from "next/headers";
 import sidebarStyle from "./style";
-import { GuestContainer, LogoButton, MemberContainer, SidebarNavigation } from "./ui";
+import {
+  GuestContainer,
+  LogoButton,
+  MemberContainer,
+  SidebarNavigation,
+} from "./ui";
 
 const API_BASE_URL =
   process.env.API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL;

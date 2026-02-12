@@ -65,7 +65,11 @@ export async function GET(request: Request) {
 
   if (!searchCoursesUrl) {
     return NextResponse.json(
-      { error: { message: "API 주소가 설정되지 않았습니다. 환경변수를 확인해주세요." } },
+      {
+        error: {
+          message: "API 주소가 설정되지 않았습니다. 환경변수를 확인해주세요.",
+        },
+      },
       { status: 500 },
     );
   }
