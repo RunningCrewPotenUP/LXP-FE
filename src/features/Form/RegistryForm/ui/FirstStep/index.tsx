@@ -75,16 +75,16 @@ const FirstStep = ({ formData, onInputChange }: FirstStepViewProps) => {
           <div className="flex space-x-6">
             <Radio
               name="type"
-              value="general"
+              value="LEARNER"
               label="일반 회원"
-              checked={formData.type === "general"}
+              checked={formData.type === "LEARNER"}
               onChange={onInputChange}
             />
             <Radio
               name="type"
-              value="instructor"
+              value="INSTRUCTOR"
               label="강사"
-              checked={formData.type === "instructor"}
+              checked={formData.type === "INSTRUCTOR"}
               onChange={onInputChange}
             />
           </div>
@@ -97,8 +97,10 @@ const FirstStep = ({ formData, onInputChange }: FirstStepViewProps) => {
           <Select
             label="경력을 선택해주세요"
             options={[
-              { value: "jr", label: "주니어임ㅋ" },
-              { value: "middle", label: "미들급임ㅋ" },
+              { value: "JUNIOR", label: "주니어" },
+              { value: "MIDDLE", label: "미들" },
+              { value: "SENIOR", label: "시니어" },
+              { value: "EXPERT", label: "익스퍼트" },
             ]}
             selectOptions={{
               name: "career",
@@ -112,6 +114,7 @@ const FirstStep = ({ formData, onInputChange }: FirstStepViewProps) => {
           label={"다음"}
           full
           buttonOptions={{
+            type: "button",
             onClick: () => context?.handleNext(),
           }}
         />

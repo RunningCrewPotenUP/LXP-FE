@@ -1,18 +1,7 @@
 import type { TagData } from "@/src/shared/constants/mocks/tags";
 import type { ChangeEvent } from "react";
 import { createContext } from "react";
-
-type SignUpType = "general" | "instructor";
-
-type SignUpFormState = {
-  id: string;
-  password: string;
-  confirmPassword: string;
-  name: string;
-  type: SignUpType;
-  career: string;
-  interests: string[];
-};
+import type { SignUpFormState, SignUpType } from "./types";
 
 type RegistryFormContextType = {
   formData: SignUpFormState;
@@ -28,7 +17,9 @@ type RegistryFormContextType = {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   handleNext: () => void;
-  handleSubmit: () => void;
+  handleSubmit: () => Promise<void>;
+  isSubmitting: boolean;
+  submitError: string;
   step: 1 | 2;
 };
 

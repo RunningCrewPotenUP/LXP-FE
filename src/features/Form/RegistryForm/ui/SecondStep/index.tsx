@@ -18,7 +18,7 @@ const SecondStep = ({ formData }: SecondStepViewProps) => {
       <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
         <div className="flex flex-wrap gap-2">
           {formData.interests.length > 0 ? (
-            formData.interests.map((tag, index) => (
+            formData.interests.map((tag) => (
               <SelectedTag
                 key={tag}
                 tag={tag}
@@ -108,7 +108,15 @@ const SecondStep = ({ formData }: SecondStepViewProps) => {
           </div>
         </div>
 
-        <ActionButton label={"다음"} full buttonOptions={{}} />
+        <ActionButton
+          label={context?.isSubmitting ? "가입 중..." : "가입하기"}
+          full
+          buttonOptions={{
+            type: "button",
+            disabled: context?.isSubmitting,
+            onClick: () => context?.handleSubmit(),
+          }}
+        />
       </div>
     </div>
   );

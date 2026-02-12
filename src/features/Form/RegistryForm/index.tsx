@@ -1,34 +1,42 @@
 "use client";
 
 import TAG_DATA, { TagData } from "@/src/shared/constants/mocks/tags";
+import APP_ROUTES from "@/src/shared/constants/routes";
+import { useRouter } from "next/navigation";
 import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
 import RegistryFormContext from "./model/context";
 import { SignUpFormProps } from "./model/props.type";
+import { registerAction } from "./model/register.action";
+import type { SignUpFormState, SignUpType } from "./model/types";
 import { signUpStyle } from "./style";
 import FirstStep from "./ui/FirstStep";
 import SecondStep from "./ui/SecondStep";
 
-type SignUpType = "general" | "instructor";
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 
-type SignUpFormState = {
-  id: string;
-  password: string;
-  confirmPassword: string;
-  name: string;
-  type: SignUpType;
-  career: string;
-  interests: string[];
+const ROLE_BY_TYPE: Record<SignUpType, string> = {
+  LEARNER: "LEARNER",
+  INSTRUCTOR: "INSTRUCTOR",
 };
 
-const RegistryForm = ({ onBack, onComplete }: SignUpFormProps) => {
+const LEVEL_BY_CAREER: Record<string, string> = {
+  JUNIOR: "JUNIOR",
+  MIDDLE: "MIDDLE",
+  SENIOR: "SENIOR",
+  EXPERT: "EXPERT",
+};
+
+const RegistryForm = ({ onComplete }: SignUpFormProps) => {
+  const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [formData, setFormData] = useState<SignUpFormState>({
     id: "",
     password: "",
     confirmPassword: "",
     name: "",
-    type: "general",
+    type: "LEARNER",
     career: "",
     interests: [],
   });
@@ -36,6 +44,8 @@ const RegistryForm = ({ onBack, onComplete }: SignUpFormProps) => {
   const [currentTagCategory, setCurrentTagCategory] =
     useState<string>("서비스");
   const [searchQuery, setSearchQuery] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -67,21 +77,70 @@ const RegistryForm = ({ onBack, onComplete }: SignUpFormProps) => {
   };
 
   const isStep1Valid =
-    formData.id.length > 0 &&
-    formData.password.length >= 8 &&
+    EMAIL_REGEX.test(formData.id) &&
+    PASSWORD_REGEX.test(formData.password) &&
     formData.password === formData.confirmPassword &&
-    formData.name.length > 0 &&
+    formData.name.trim().length > 0 &&
     formData.career !== "";
 
   const handleNext = () => {
     if (step === 1 && isStep1Valid) {
+      setSubmitError("");
       setStep(2);
+      return;
+    }
+
+    if (step === 1) {
+      setSubmitError(
+        "이메일 형식과 비밀번호 규칙을 확인하고 필수값을 입력해주세요.",
+      );
     }
   };
 
-  const handleSubmit = () => {
-    alert(`${formData.name}님, 회원가입이 완료되었습니다!`);
+  const handleSubmit = async () => {
+    if (isSubmitting) {
+      return;
+    }
+
+    if (!isStep1Valid) {
+      setSubmitError(
+        "계정 정보가 올바르지 않습니다. 1단계 입력값을 다시 확인해주세요.",
+      );
+      setStep(1);
+      return;
+    }
+
+    const selectedTags = TAG_DATA.filter((tag) =>
+      formData.interests.includes(tag.name),
+    );
+    const tagIds = selectedTags.map((tag) => tag.tagId);
+
+    if (tagIds.length === 0) {
+      setSubmitError("최소 1개 이상의 태그를 선택해주세요.");
+      return;
+    }
+
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    const result = await registerAction({
+      email: formData.id,
+      password: formData.password,
+      name: formData.name,
+      role: ROLE_BY_TYPE[formData.type],
+      level: LEVEL_BY_CAREER[formData.career] ?? "JUNIOR",
+      tagIds,
+    });
+
+    setIsSubmitting(false);
+
+    if (!result.ok) {
+      setSubmitError(result.message);
+      return;
+    }
+
     onComplete?.();
+    router.push(APP_ROUTES.LOGIN);
   };
 
   const categories = useMemo(() => {
@@ -122,6 +181,8 @@ const RegistryForm = ({ onBack, onComplete }: SignUpFormProps) => {
         setSearchQuery,
         handleNext,
         handleSubmit,
+        isSubmitting,
+        submitError,
         step,
       }}
     >
@@ -132,6 +193,11 @@ const RegistryForm = ({ onBack, onComplete }: SignUpFormProps) => {
           )}
           {step === 2 && <SecondStep formData={formData} />}
         </div>
+        {submitError && (
+          <p className="mt-4 text-sm font-semibold text-red-500">
+            {submitError}
+          </p>
+        )}
       </form>
     </RegistryFormContext>
   );
