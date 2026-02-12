@@ -1,4 +1,4 @@
-import { CompassIcon, HouseIcon } from "lucide-react";
+import APP_ROUTES from "@/src/shared/constants/routes";
 import { cookies } from "next/headers";
 import sidebarStyle from "./style";
 import {
@@ -58,8 +58,17 @@ const Sidebar = async () => {
 
       <SidebarNavigation
         itemOptions={[
-          { label: "메인", icon: HouseIcon, active: true },
-          { label: "내 학습", icon: CompassIcon },
+          {
+            label: "메인",
+            iconName: "home",
+            href: APP_ROUTES.MAIN,
+          },
+          {
+            label: "강의 개설",
+            iconName: "courseCreate",
+            href: APP_ROUTES.COURSE_CREATE,
+          },
+          { label: "내 학습", iconName: "learning", href: APP_ROUTES.ME },
         ]}
       />
 

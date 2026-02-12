@@ -1,4 +1,5 @@
+import CourseForm from "./CourseForm";
 import EnrollmentSubmitForm from "./EnrollmentForm/ui/EnrollmentSubmitForm";
 import RegistryForm from "./RegistryForm";
 
-export { EnrollmentSubmitForm, RegistryForm };
+export { CourseForm, EnrollmentSubmitForm, RegistryForm };

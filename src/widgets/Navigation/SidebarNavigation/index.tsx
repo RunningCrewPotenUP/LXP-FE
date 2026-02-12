@@ -7,9 +7,11 @@ const SidebarNavigation = ({ itemOptions }: SidebarNavigationProps) => {
       {itemOptions.map((item, index) => (
         <SidebarNavigationItem
           key={index}
-          icon={item.icon}
+          iconName={item.iconName}
           active={item.active}
           label={item.label}
+          href={item.href}
+          buttonOptions={item.buttonOptions}
         />
       ))}
     </nav>
