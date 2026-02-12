@@ -1,6 +1,7 @@
 import clsx from "clsx";
+import { TagProps } from "./model/props.type";
 
-const Tag = () => {
+const Tag = ({ label }: TagProps) => {
   return (
     <span
       className={clsx(
@@ -10,7 +11,7 @@ const Tag = () => {
         "border-slate-200 dark:border-slate-800",
       )}
     >
-      #Tag
+      #{label}
     </span>
   );
 };

@@ -1,4 +1,4 @@
-import SignUpForm from "@/src/widgets/RegistryForm";
+import SignUpForm from "@/src/features/Form/RegistryForm";
 
 const RegisterPage = () => {
   return <SignUpForm />;

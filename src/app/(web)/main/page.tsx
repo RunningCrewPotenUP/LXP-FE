@@ -20,41 +20,37 @@ export default function Home() {
           cardOptions={[
             {
               id: 1,
-              title: "test1",
-              description: "test1 description",
-              badgeOptions: { label: "개발" },
+              title: "4주 만에 피그마 기초 끝내기: 비전공자 실무 UI 디자인",
+              description:
+                "디자인 툴이 처음이신가요? 이론보다는 직접 그려보며 익히는 실습 중심의 크루입니다. 매주 한 번의 라이브 토론을 통해 서로의 결과물을 피드백합니다.",
+              badgeOptions: { label: "디자인" },
               tagOptions: [
                 {
-                  label: "tags",
+                  label: "Figma",
                 },
                 {
-                  label: "tags",
+                  label: "디자인",
                 },
                 {
-                  label: "tags",
-                },
-                {
-                  label: "tags",
+                  label: "UI/UX",
                 },
               ],
             },
             {
               id: 2,
-              title: "test2",
-              description: "test2 description",
-              badgeOptions: { label: "디자인" },
+              title: "비전공자를 위한 SQL 첫걸음: 데이터 리터러시 기르기",
+              description:
+                "데이터가 무서운 문과생을 위한 SQL 입문 과정입니다. 실제 커머스 데이터를 가지고 쿼리를 작성해보며 데이터 문해력을 길러봅시다.",
+              badgeOptions: { label: "데이터" },
               tagOptions: [
                 {
-                  label: "tags",
+                  label: "데이터기초",
                 },
                 {
-                  label: "tags",
+                  label: "실무응용",
                 },
                 {
-                  label: "tags",
-                },
-                {
-                  label: "tags",
+                  label: "MySQL",
                 },
               ],
             },

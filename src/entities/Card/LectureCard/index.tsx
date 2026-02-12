@@ -16,7 +16,7 @@ const LectureCard = () => {
         setToggle(!toggle);
       }}
     >
-      <Tag />
+      <Tag label="asdf" />
 
       <h4 className={lectureCardStyle.variants.lectureTitle}>
         데이터베이스의 이해와 SELECT문

@@ -1,6 +1,6 @@
 import { LectureCard } from "@/src/entities/Card";
 import Quotes from "@/src/entities/Quotes";
-import EnrollmentSubmitForm from "@/src/widgets/EnrollmentForm/EnrollmentSubmitForm";
+import EnrollmentSubmitForm from "@/src/features/Form/EnrollmentForm/ui/EnrollmentSubmitForm";
 import { CourseDetailHero } from "@/src/widgets/Hero";
 
 const CourseDetailPage = () => {
