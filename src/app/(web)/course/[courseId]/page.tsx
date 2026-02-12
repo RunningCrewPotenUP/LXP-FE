@@ -97,6 +97,7 @@ const CourseDetailPage = async ({
 
         <div className="xl:order-2 xl:col-span-4 xl:col-start-9 xl:row-start-1 xl:row-span-2 xl:sticky xl:top-24 self-start">
           <EnrollmentSubmitForm
+            courseId={Number(courseId)}
             instructorName={courseDetail?.instructorName}
             durationInHours={courseDetail?.durationInHours}
           />

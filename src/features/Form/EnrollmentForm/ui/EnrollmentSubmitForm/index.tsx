@@ -1,21 +1,70 @@
+"use client";
+
 import { ActionButton } from "@/src/entities/Button";
+import APP_ROUTES from "@/src/shared/constants/routes";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import enrollmentSubmitFormStyle from "./style";
 
 type EnrollmentSubmitFormProps = {
+  courseId: number;
   instructorName?: string;
   durationInHours?: number;
 };
 
 const EnrollmentSubmitForm = ({
+  courseId,
   instructorName,
   durationInHours,
 }: EnrollmentSubmitFormProps) => {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const safeInstructorName = instructorName ?? "종원컴퍼니";
   const instructorInitial = safeInstructorName.charAt(0) || "크";
   const safeDuration =
     typeof durationInHours === "number" && durationInHours > 0
       ? `${durationInHours}시간`
       : "10시간";
+
+  const handleEnroll = async () => {
+    if (isSubmitting) {
+      return;
+    }
+
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    const response = await fetch(`/api/enrollments?courseId=${courseId}`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      let message = "수강 등록에 실패했습니다.";
+      const rawText = await response.text();
+
+      if (rawText) {
+        try {
+          const parsed = JSON.parse(rawText) as {
+            message?: string;
+            error?: { message?: string };
+          };
+
+          message = parsed.error?.message ?? parsed.message ?? rawText;
+        } catch {
+          message = rawText;
+        }
+      }
+
+      setSubmitError(message);
+      setIsSubmitting(false);
+      return;
+    }
+
+    setIsSubmitting(false);
+    router.push(APP_ROUTES.ME);
+  };
 
   return (
     <div className="xl:w-80 h-fit sticky top-6">
@@ -45,7 +94,21 @@ const EnrollmentSubmitForm = ({
           </div>
         </div>
 
-        <ActionButton label={"트랙 합류하기"} full />
+        <ActionButton
+          label={isSubmitting ? "합류 처리 중..." : "트랙 합류하기"}
+          full
+          buttonOptions={{
+            type: "button",
+            onClick: handleEnroll,
+            disabled: isSubmitting,
+          }}
+        />
+
+        {submitError && (
+          <p className="text-sm font-semibold text-red-500 mt-3 text-center">
+            {submitError}
+          </p>
+        )}
 
         <p className="text-[10px] text-slate-400 text-center mt-4 font-medium leading-relaxed">
           달리던 트랙은 크루 리더가 중단할 때까지 유지됩니다.

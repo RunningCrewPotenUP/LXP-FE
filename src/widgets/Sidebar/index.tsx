@@ -59,7 +59,7 @@ const Sidebar = async () => {
       <SidebarNavigation
         itemOptions={[
           { label: "메인", icon: HouseIcon, active: true },
-          { label: "둘러보기", icon: CompassIcon },
+          { label: "내 학습", icon: CompassIcon },
         ]}
       />
 

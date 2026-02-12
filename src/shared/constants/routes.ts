@@ -3,6 +3,7 @@ const APP_ROUTES = {
   LOGIN: "/login",
   REGISTER: "/register",
   COURSE_DETAIL: "/course",
+  ME: "/me",
 };
 
 export default APP_ROUTES;
