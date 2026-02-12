@@ -1,8 +1,52 @@
 import { CompassIcon, HouseIcon } from "lucide-react";
+import { cookies } from "next/headers";
 import sidebarStyle from "./style";
 import { GuestContainer, LogoButton, SidebarNavigation } from "./ui";
 
-const Sidebar = () => {
+const API_BASE_URL =
+  process.env.API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL;
+
+const buildMeUrl = () => {
+  if (!API_BASE_URL) {
+    return null;
+  }
+
+  const normalizedBaseUrl = API_BASE_URL.endsWith("/")
+    ? API_BASE_URL.slice(0, -1)
+    : API_BASE_URL;
+
+  return `${normalizedBaseUrl}/users/me`;
+};
+
+const getIsAuthenticated = async () => {
+  const meUrl = buildMeUrl();
+  if (!meUrl) {
+    return false;
+  }
+
+  const cookieHeader = (await cookies()).toString();
+  if (!cookieHeader) {
+    return false;
+  }
+
+  try {
+    const response = await fetch(meUrl, {
+      method: "GET",
+      headers: {
+        cookie: cookieHeader,
+      },
+      cache: "no-store",
+    });
+
+    return response.ok;
+  } catch {
+    return false;
+  }
+};
+
+const Sidebar = async () => {
+  const isAuthenticated = await getIsAuthenticated();
+
   return (
     <aside className={sidebarStyle.variants.container}>
       <LogoButton />
@@ -15,7 +59,7 @@ const Sidebar = () => {
       />
 
       <div className={sidebarStyle.variants.footer}>
-        <GuestContainer />
+        {!isAuthenticated && <GuestContainer />}
       </div>
     </aside>
   );
