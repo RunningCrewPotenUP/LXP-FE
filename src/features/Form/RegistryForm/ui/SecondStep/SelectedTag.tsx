@@ -2,15 +2,15 @@ import clsx from "clsx";
 import { CheckCircle2Icon } from "lucide-react";
 
 interface SelectedTagProps {
-  tag: string;
-  toggleInterest: () => void;
+  tagName: string;
+  onRemove: () => void;
 }
 
-const SelectedTag = ({ tag, toggleInterest }: SelectedTagProps) => {
+const SelectedTag = ({ tagName, onRemove }: SelectedTagProps) => {
   return (
     <button
       type="button"
-      onClick={toggleInterest}
+      onClick={onRemove}
       className={clsx(
         "flex space-x-1.5 items-center rounded-lg text-xs font-bold",
         "text-indigo-800 dark:text-indigo-200 ",
@@ -21,7 +21,7 @@ const SelectedTag = ({ tag, toggleInterest }: SelectedTagProps) => {
       )}
     >
       <CheckCircle2Icon size={14} className="" />
-      <span>{tag}</span>
+      <span>{tagName}</span>
     </button>
   );
 };

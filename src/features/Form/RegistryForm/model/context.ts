@@ -1,7 +1,6 @@
-import type { TagData } from "@/src/shared/constants/mocks/tags";
 import type { ChangeEvent } from "react";
 import { createContext } from "react";
-import type { SignUpFormState, SignUpType } from "./types";
+import type { RegistryTag, SignUpFormState, SignUpType } from "./types";
 
 type RegistryFormContextType = {
   formData: SignUpFormState;
@@ -9,13 +8,16 @@ type RegistryFormContextType = {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => void;
   handleTypeChange: (type: SignUpType) => void;
-  toggleInterest: (tagName: string) => void;
+  toggleInterest: (tagId: number) => void;
+  selectedTags: RegistryTag[];
   categories: string[];
-  groupedTags: Record<string, TagData[]>;
+  groupedTags: Record<string, RegistryTag[]>;
   currentTagCategory: string;
   setCurrentTagCategory: (category: string) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  isLoadingTags: boolean;
+  tagLoadError: string;
   handleNext: () => void;
   handleSubmit: () => Promise<void>;
   isSubmitting: boolean;

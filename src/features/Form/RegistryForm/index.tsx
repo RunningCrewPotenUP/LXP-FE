@@ -1,20 +1,21 @@
 "use client";
 
-import TAG_DATA, { TagData } from "@/src/shared/constants/mocks/tags";
 import APP_ROUTES from "@/src/shared/constants/routes";
 import { useRouter } from "next/navigation";
 import type { ChangeEvent } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import RegistryFormContext from "./model/context";
 import { SignUpFormProps } from "./model/props.type";
 import { registerAction } from "./model/register.action";
-import type { SignUpFormState, SignUpType } from "./model/types";
+import type { RegistryTag, SignUpFormState, SignUpType } from "./model/types";
 import { signUpStyle } from "./style";
 import FirstStep from "./ui/FirstStep";
 import SecondStep from "./ui/SecondStep";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+const MAX_TAG_SELECTION_COUNT = 5;
+const MIN_TAG_SELECTION_COUNT = 3;
 
 const ROLE_BY_TYPE: Record<SignUpType, string> = {
   LEARNER: "LEARNER",
@@ -28,6 +29,18 @@ const LEVEL_BY_CAREER: Record<string, string> = {
   EXPERT: "EXPERT",
 };
 
+type TagsApiSuccessResponse = {
+  data?: {
+    tags?: RegistryTag[];
+  };
+};
+
+type TagsApiErrorResponse = {
+  error?: {
+    message?: string;
+  };
+};
+
 const RegistryForm = ({ onComplete }: SignUpFormProps) => {
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
@@ -38,14 +51,74 @@ const RegistryForm = ({ onComplete }: SignUpFormProps) => {
     name: "",
     type: "LEARNER",
     career: "",
-    interests: [],
+    selectedTagIds: [],
   });
 
-  const [currentTagCategory, setCurrentTagCategory] =
-    useState<string>("서비스");
+  const [tags, setTags] = useState<RegistryTag[]>([]);
+  const [currentTagCategory, setCurrentTagCategory] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [submitError, setSubmitError] = useState("");
+  const [isLoadingTags, setIsLoadingTags] = useState(true);
+  const [tagLoadError, setTagLoadError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchTags = async () => {
+      setIsLoadingTags(true);
+      setTagLoadError("");
+
+      try {
+        const response = await fetch("/api/tags", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        const payload = (await response.json()) as
+          | TagsApiSuccessResponse
+          | TagsApiErrorResponse;
+
+        if (!response.ok) {
+          if (!isMounted) {
+            return;
+          }
+
+          const message =
+            "error" in payload
+              ? payload.error?.message
+              : "태그 목록을 불러오지 못했습니다.";
+          setTagLoadError(message ?? "태그 목록을 불러오지 못했습니다.");
+          setTags([]);
+          return;
+        }
+
+        if (!isMounted) {
+          return;
+        }
+
+        const nextTags = "data" in payload ? payload.data?.tags : undefined;
+        setTags(nextTags ?? []);
+      } catch {
+        if (!isMounted) {
+          return;
+        }
+
+        setTagLoadError("태그 목록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
+        setTags([]);
+      } finally {
+        if (isMounted) {
+          setIsLoadingTags(false);
+        }
+      }
+    };
+
+    fetchTags();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -58,21 +131,21 @@ const RegistryForm = ({ onComplete }: SignUpFormProps) => {
     setFormData((prev) => ({ ...prev, type }));
   };
 
-  const toggleInterest = (tagName: string) => {
+  const toggleInterest = (tagId: number) => {
     setFormData((prev) => {
-      if (prev.interests.includes(tagName)) {
+      if (prev.selectedTagIds.includes(tagId)) {
         return {
           ...prev,
-          interests: prev.interests.filter((tag) => tag !== tagName),
+          selectedTagIds: prev.selectedTagIds.filter((id) => id !== tagId),
         };
       }
 
-      if (prev.interests.length >= 5) {
+      if (prev.selectedTagIds.length >= MAX_TAG_SELECTION_COUNT) {
         alert("관심 주제는 최대 5개까지 선택 가능합니다.");
         return prev;
       }
 
-      return { ...prev, interests: [...prev.interests, tagName] };
+      return { ...prev, selectedTagIds: [...prev.selectedTagIds, tagId] };
     });
   };
 
@@ -110,13 +183,8 @@ const RegistryForm = ({ onComplete }: SignUpFormProps) => {
       return;
     }
 
-    const selectedTags = TAG_DATA.filter((tag) =>
-      formData.interests.includes(tag.name),
-    );
-    const tagIds = selectedTags.map((tag) => tag.tagId);
-
-    if (tagIds.length === 0) {
-      setSubmitError("최소 1개 이상의 태그를 선택해주세요.");
+    if (formData.selectedTagIds.length < MIN_TAG_SELECTION_COUNT) {
+      setSubmitError("최소 3개 이상의 태그를 선택해주세요.");
       return;
     }
 
@@ -129,7 +197,7 @@ const RegistryForm = ({ onComplete }: SignUpFormProps) => {
       name: formData.name,
       role: ROLE_BY_TYPE[formData.type],
       level: LEVEL_BY_CAREER[formData.career] ?? "JUNIOR",
-      tagIds,
+      tagIds: formData.selectedTagIds,
     });
 
     setIsSubmitting(false);
@@ -144,12 +212,24 @@ const RegistryForm = ({ onComplete }: SignUpFormProps) => {
   };
 
   const categories = useMemo(() => {
-    return Array.from(new Set(TAG_DATA.map((tag) => tag.category)));
-  }, []);
+    return Array.from(new Set(tags.map((tag) => tag.category)));
+  }, [tags]);
+
+  useEffect(() => {
+    if (categories.length === 0) {
+      return;
+    }
+
+    if (currentTagCategory && categories.includes(currentTagCategory)) {
+      return;
+    }
+
+    setCurrentTagCategory(categories[0]);
+  }, [categories, currentTagCategory]);
 
   const groupedTags = useMemo(() => {
-    const filtered = TAG_DATA.filter(
-      (tag: TagData) =>
+    const filtered = tags.filter(
+      (tag) =>
         tag.category === currentTagCategory &&
         (searchQuery === "" ||
           tag.name.toLowerCase().includes(searchQuery.toLowerCase())),
@@ -162,9 +242,17 @@ const RegistryForm = ({ onComplete }: SignUpFormProps) => {
         acc[sub].push(tag);
         return acc;
       },
-      {} as Record<string, TagData[]>,
+      {} as Record<string, RegistryTag[]>,
     );
-  }, [currentTagCategory, searchQuery]);
+  }, [currentTagCategory, searchQuery, tags]);
+
+  const selectedTags = useMemo(() => {
+    const tagsById = new Map(tags.map((tag) => [tag.tagId, tag]));
+
+    return formData.selectedTagIds
+      .map((tagId) => tagsById.get(tagId))
+      .filter((tag): tag is RegistryTag => !!tag);
+  }, [formData.selectedTagIds, tags]);
 
   return (
     <RegistryFormContext
@@ -173,12 +261,15 @@ const RegistryForm = ({ onComplete }: SignUpFormProps) => {
         handleInputChange,
         handleTypeChange,
         toggleInterest,
+        selectedTags,
         categories,
         groupedTags,
         currentTagCategory,
         setCurrentTagCategory,
         searchQuery,
         setSearchQuery,
+        isLoadingTags,
+        tagLoadError,
         handleNext,
         handleSubmit,
         isSubmitting,
@@ -191,7 +282,7 @@ const RegistryForm = ({ onComplete }: SignUpFormProps) => {
           {step === 1 && (
             <FirstStep formData={formData} onInputChange={handleInputChange} />
           )}
-          {step === 2 && <SecondStep formData={formData} />}
+          {step === 2 && <SecondStep />}
         </div>
         {submitError && (
           <p className="mt-4 text-sm font-semibold text-red-500">

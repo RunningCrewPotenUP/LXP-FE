@@ -11,8 +11,4 @@ interface FirstStepViewProps {
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-interface SecondStepViewProps {
-  formData: SignUpFormState;
-}
-
-export type { FirstStepViewProps, SecondStepViewProps, SignUpFormProps };
+export type { FirstStepViewProps, SignUpFormProps };

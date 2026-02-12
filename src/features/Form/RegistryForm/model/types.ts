@@ -1,5 +1,13 @@
 export type SignUpType = "LEARNER" | "INSTRUCTOR";
 
+export type RegistryTag = {
+  tagId: number;
+  name: string;
+  category: string;
+  subCategory: string;
+  status: string;
+};
+
 export type SignUpFormState = {
   id: string;
   password: string;
@@ -7,5 +15,5 @@ export type SignUpFormState = {
   name: string;
   type: SignUpType;
   career: string;
-  interests: string[];
+  selectedTagIds: number[];
 };
