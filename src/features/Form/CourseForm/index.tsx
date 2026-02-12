@@ -92,7 +92,10 @@ const MAX_LECTURES_PER_SECTION = 5;
 const MAX_TAG_SELECTION = 5;
 
 const createId = () => {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
     return crypto.randomUUID();
   }
 
@@ -177,7 +180,9 @@ const CourseForm = () => {
   const [isLoadingTags, setIsLoadingTags] = useState(false);
   const [tagLoadError, setTagLoadError] = useState("");
 
-  const [sections, setSections] = useState<SectionDraft[]>([createSectionDraft(1)]);
+  const [sections, setSections] = useState<SectionDraft[]>([
+    createSectionDraft(1),
+  ]);
   const [selectedSectionId, setSelectedSectionId] = useState("");
   const [selectedLectureId, setSelectedLectureId] = useState("");
 
@@ -189,7 +194,9 @@ const CourseForm = () => {
   }, [sections]);
 
   useEffect(() => {
-    const selectedSection = sections.find((section) => section.id === selectedSectionId);
+    const selectedSection = sections.find(
+      (section) => section.id === selectedSectionId,
+    );
     const fallbackLectureId = selectedSection?.lectures[0]?.id ?? "";
 
     setSelectedLectureId((prev) => {
@@ -197,7 +204,9 @@ const CourseForm = () => {
         return "";
       }
 
-      const exists = selectedSection.lectures.some((lecture) => lecture.id === prev);
+      const exists = selectedSection.lectures.some(
+        (lecture) => lecture.id === prev,
+      );
       return exists ? prev : fallbackLectureId;
     });
   }, [sections, selectedSectionId]);
@@ -245,7 +254,9 @@ const CourseForm = () => {
           return;
         }
 
-        setTagLoadError("태그 목록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
+        setTagLoadError(
+          "태그 목록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.",
+        );
         setTags([]);
       } finally {
         if (isMounted) {
@@ -268,8 +279,9 @@ const CourseForm = () => {
 
   const selectedLecture = useMemo(
     () =>
-      selectedSection?.lectures.find((lecture) => lecture.id === selectedLectureId) ??
-      null,
+      selectedSection?.lectures.find(
+        (lecture) => lecture.id === selectedLectureId,
+      ) ?? null,
     [selectedLectureId, selectedSection],
   );
 
@@ -292,7 +304,9 @@ const CourseForm = () => {
     selectedTagIds.length > 0;
 
   const getSelectedIndices = () => {
-    const sectionIndex = sections.findIndex((section) => section.id === selectedSectionId);
+    const sectionIndex = sections.findIndex(
+      (section) => section.id === selectedSectionId,
+    );
     const lectureIndex =
       sectionIndex >= 0
         ? sections[sectionIndex].lectures.findIndex(
@@ -303,7 +317,9 @@ const CourseForm = () => {
     return { sectionIndex, lectureIndex };
   };
 
-  const updateSelectedLecture = (updater: (lecture: LectureDraft) => LectureDraft) => {
+  const updateSelectedLecture = (
+    updater: (lecture: LectureDraft) => LectureDraft,
+  ) => {
     const { sectionIndex, lectureIndex } = getSelectedIndices();
 
     if (sectionIndex < 0 || lectureIndex < 0) {
@@ -321,7 +337,9 @@ const CourseForm = () => {
     });
   };
 
-  const updateSelectedSection = (updater: (section: SectionDraft) => SectionDraft) => {
+  const updateSelectedSection = (
+    updater: (section: SectionDraft) => SectionDraft,
+  ) => {
     const { sectionIndex } = getSelectedIndices();
 
     if (sectionIndex < 0) {
@@ -363,7 +381,8 @@ const CourseForm = () => {
     const payload = (await uploadResponse.json()) as UploadApiSuccessResponse;
 
     if (!uploadResponse.ok) {
-      const errorMessage = payload.error?.message ?? "파일 업로드에 실패했습니다.";
+      const errorMessage =
+        payload.error?.message ?? "파일 업로드에 실패했습니다.";
       const upstreamMessage = payload.error?.upstreamMessage;
       const code = payload.error?.code;
       const hint = payload.error?.hint;
@@ -377,9 +396,7 @@ const CourseForm = () => {
         detail ? `detail: ${detail}` : "",
       ].filter(Boolean);
 
-      throw new Error(
-        parts.join("\n"),
-      );
+      throw new Error(parts.join("\n"));
     }
 
     const fileUrl = payload.data?.fileUrl;
@@ -391,7 +408,9 @@ const CourseForm = () => {
     return fileUrl;
   };
 
-  const handleThumbnailSelect = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleThumbnailSelect = async (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
 
     if (!file) {
@@ -413,7 +432,9 @@ const CourseForm = () => {
       setThumbnailName(file.name);
     } catch (error) {
       setSubmitError(
-        error instanceof Error ? error.message : "썸네일 업로드에 실패했습니다.",
+        error instanceof Error
+          ? error.message
+          : "썸네일 업로드에 실패했습니다.",
       );
     } finally {
       setIsUploadingThumbnail(false);
@@ -459,12 +480,16 @@ const CourseForm = () => {
         ...lecture,
         isUploading: false,
         uploadError:
-          error instanceof Error ? error.message : "동영상 업로드에 실패했습니다.",
+          error instanceof Error
+            ? error.message
+            : "동영상 업로드에 실패했습니다.",
       }));
     }
   };
 
-  const handleLectureFileSelect = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleLectureFileSelect = async (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
 
     if (!file) {
@@ -576,7 +601,10 @@ const CourseForm = () => {
           (lecture) => lecture.id !== lectureId,
         );
 
-        if (sectionId === selectedSectionId && lectureId === selectedLectureId) {
+        if (
+          sectionId === selectedSectionId &&
+          lectureId === selectedLectureId
+        ) {
           setSelectedLectureId(nextLectures[0]?.id ?? "");
         }
 
@@ -750,7 +778,8 @@ const CourseForm = () => {
               options={LEVEL_OPTIONS}
               selectOptions={{
                 value: difficulty,
-                onChange: (event) => setDifficulty(event.target.value as Difficulty),
+                onChange: (event) =>
+                  setDifficulty(event.target.value as Difficulty),
               }}
             />
           </div>
@@ -779,14 +808,18 @@ const CourseForm = () => {
             </div>
 
             {isLoadingTags ? (
-              <p className="text-sm text-slate-400">태그를 불러오는 중입니다.</p>
+              <p className="text-sm text-slate-400">
+                태그를 불러오는 중입니다.
+              </p>
             ) : tagLoadError ? (
               <p className="text-sm text-red-500">{tagLoadError}</p>
             ) : (
               <div className="space-y-4">
                 {Object.entries(groupedTags).map(([category, categoryTags]) => (
                   <div key={category} className="space-y-2">
-                    <p className="text-xs font-semibold text-slate-400">{category}</p>
+                    <p className="text-xs font-semibold text-slate-400">
+                      {category}
+                    </p>
                     <div className="flex flex-wrap gap-2">
                       {categoryTags.map((tag) => (
                         <Tag
@@ -832,7 +865,9 @@ const CourseForm = () => {
                   {thumbnailName}
                 </span>
               ) : (
-                <span className="text-xs text-slate-400">등록된 썸네일 없음</span>
+                <span className="text-xs text-slate-400">
+                  등록된 썸네일 없음
+                </span>
               )}
             </div>
           </div>
@@ -905,16 +940,22 @@ const CourseForm = () => {
               />
 
               {selectedLecture?.isUploading ? (
-                <p className="text-xs text-indigo-500 mt-3">업로드 중입니다...</p>
+                <p className="text-xs text-indigo-500 mt-3">
+                  업로드 중입니다...
+                </p>
               ) : selectedLecture?.fileName ? (
                 <div className="mt-3 text-xs text-slate-500 dark:text-slate-400">
                   <p>{selectedLecture.fileName}</p>
-                  <p className="mt-1">길이: {formatDurationLabel(selectedLecture.durationSeconds)}</p>
+                  <p className="mt-1">
+                    길이: {formatDurationLabel(selectedLecture.durationSeconds)}
+                  </p>
                 </div>
               ) : null}
 
               {selectedLecture?.uploadError ? (
-                <p className="text-xs text-red-500 mt-3">{selectedLecture.uploadError}</p>
+                <p className="text-xs text-red-500 mt-3">
+                  {selectedLecture.uploadError}
+                </p>
               ) : null}
             </div>
 
@@ -979,7 +1020,10 @@ const CourseForm = () => {
                       className="flex items-center gap-2 text-left min-w-0"
                     >
                       {section.collapsed ? (
-                        <ChevronRightIcon size={16} className="text-slate-400" />
+                        <ChevronRightIcon
+                          size={16}
+                          className="text-slate-400"
+                        />
                       ) : (
                         <ChevronDownIcon size={16} className="text-slate-400" />
                       )}
@@ -1043,7 +1087,9 @@ const CourseForm = () => {
                             <div className="flex justify-end mt-1.5">
                               <button
                                 type="button"
-                                onClick={() => removeLecture(section.id, lecture.id)}
+                                onClick={() =>
+                                  removeLecture(section.id, lecture.id)
+                                }
                                 className="p-1 rounded-md text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
                                 title="강의 삭제"
                               >

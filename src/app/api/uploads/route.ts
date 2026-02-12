@@ -84,7 +84,8 @@ const buildUploadTarget = (fileName: string, resource: UploadResource) => {
 
   const extensionIndex = fileName.lastIndexOf(".");
   const extension = extensionIndex >= 0 ? fileName.slice(extensionIndex) : "";
-  const baseName = extensionIndex >= 0 ? fileName.slice(0, extensionIndex) : fileName;
+  const baseName =
+    extensionIndex >= 0 ? fileName.slice(0, extensionIndex) : fileName;
   const uniqueSuffix = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const key = `courses/${resource}s/${baseName}-${uniqueSuffix}${extension}`;
   const canonicalUri = `/${encodePath(R2_BUCKET_NAME as string)}/${encodePath(key)}`;
@@ -212,7 +213,9 @@ export async function POST(request: Request) {
   }
 
   const fileName = sanitizeFileName(fileCandidate.name ?? "upload.bin");
-  const contentType = (fileCandidate.type || "application/octet-stream").toLowerCase();
+  const contentType = (
+    fileCandidate.type || "application/octet-stream"
+  ).toLowerCase();
 
   if (!validateContentType(resource, contentType)) {
     return NextResponse.json(

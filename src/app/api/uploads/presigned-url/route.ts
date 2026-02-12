@@ -112,7 +112,9 @@ export async function POST(request: Request) {
   }
 
   const fileName = sanitizeFileName(body.fileName ?? "");
-  const contentType = (body.contentType ?? "application/octet-stream").toLowerCase();
+  const contentType = (
+    body.contentType ?? "application/octet-stream"
+  ).toLowerCase();
   const resource = body.resource ?? "video";
 
   if (!validateContentType(resource, contentType)) {
@@ -135,7 +137,8 @@ export async function POST(request: Request) {
 
   const extensionIndex = fileName.lastIndexOf(".");
   const extension = extensionIndex >= 0 ? fileName.slice(extensionIndex) : "";
-  const baseName = extensionIndex >= 0 ? fileName.slice(0, extensionIndex) : fileName;
+  const baseName =
+    extensionIndex >= 0 ? fileName.slice(0, extensionIndex) : fileName;
   const uniqueSuffix = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const key = `courses/${resource}s/${baseName}-${uniqueSuffix}${extension}`;
   const canonicalUri = `/${encodePath(R2_BUCKET_NAME as string)}/${encodePath(key)}`;
